@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Web; 
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data.SqlClient;
+ 
 
 /**
  * Andrea Derflinger
- * Lab 2 
+ * Lab 2
  * 1/30/2018
  * This work and I comply with the JMU Honor Code.
 **/
@@ -255,21 +256,24 @@ public partial class _Default : System.Web.UI.Page
     }
     private void CommitToDB(Employee e)
     {
+
         try
         {
-           
+
             System.Data.SqlClient.SqlConnection sc = new System.Data.SqlClient.SqlConnection();
+
+            
             sc.ConnectionString = @"Server =Localhost ;Database=Lab3;Trusted_Connection=Yes;";
-            string commandText = "INSERT into [dbo].[Employee] (FirstName, LastName, MI, HouseNumber, Street, CityCounty, StateAbb, CountryAbb" +
-                "Zip, DateOfBirth, HireDate, TerminationDate, Salary, ManagerID, LastUpdatedBy, LastUpdated) " +
-                "values (@firstName, @lastName, @mi, @houseNum, @street, @cityCounty, @state, @country, " +
-                "@zip, @dob, @hireDate, @termDate, @salary, @managerID, @lastUpdatedBy, @lastUpdated)";
+
+            sc.Open();
+            string commandText = "INSERT INTO [dbo].[Employee] VALUES (@firstName, @lastName, @mi, @houseNum, @street, @cityCounty, @state, @country, @zip, @dob, @hireDate, @termDate, @salary, @managerID, @lastUpdatedBy, @lastUpdated)";
             System.Data.SqlClient.SqlCommand insert = new System.Data.SqlClient.SqlCommand(commandText, sc);
+            
             insert.Parameters.AddWithValue("@firstName", e.FName);
-            insert.Parameters.AddWithValue("@projectDesc", e.LName);
+            insert.Parameters.AddWithValue("@lastName", e.LName);
             if (e.MI == "NULL")
             {
-                insert.Parameters.AddWithValue("@mi", "NULL");
+                insert.Parameters.AddWithValue("@mi", DBNull.Value);
             }
             else
             {
@@ -280,7 +284,7 @@ public partial class _Default : System.Web.UI.Page
             insert.Parameters.AddWithValue("@cityCounty", e.CityCountry);
             if (e.State == "NULL")
             {
-                insert.Parameters.AddWithValue("@state", "NULL");
+                insert.Parameters.AddWithValue("@state", DBNull.Value);
             }
             else
             {
@@ -292,7 +296,7 @@ public partial class _Default : System.Web.UI.Page
             insert.Parameters.AddWithValue("@hireDate", e.HireDate);
             if (e.TermDate == DateTime.MinValue)
             {
-                insert.Parameters.AddWithValue("@termDate", "NULL");
+                insert.Parameters.AddWithValue("@termDate", DBNull.Value);
             }
             else
             {
@@ -301,7 +305,7 @@ public partial class _Default : System.Web.UI.Page
             insert.Parameters.AddWithValue("@salary", e.Salary);
             if (e.ManagerID == -1)
             {
-                insert.Parameters.AddWithValue("@managerID", "NULL");
+                insert.Parameters.AddWithValue("@managerID", DBNull.Value);
             }
             else
             {
@@ -310,9 +314,11 @@ public partial class _Default : System.Web.UI.Page
             insert.Parameters.AddWithValue("@lastUpdatedBy", e.LastUpdatedBy);
             insert.Parameters.AddWithValue("@lastUpdated", e.LastUpdated);
 
-            sc.Open();
+
+
             insert.ExecuteNonQuery();
             Label.Text += "Employee has been added!";
+     
             sc.Close();
 
         }
@@ -320,6 +326,7 @@ public partial class _Default : System.Web.UI.Page
         {
             Label.Text += "Error adding employee!";
             Label.Text += i.Message;
+
         }
     }
 
@@ -334,7 +341,7 @@ public partial class _Default : System.Web.UI.Page
         try
         {
             System.Data.SqlClient.SqlConnection sc = new System.Data.SqlClient.SqlConnection();
-            sc.ConnectionString = @"Server =Localhost ;Database=Lab2;Trusted_Connection=Yes;";
+            sc.ConnectionString = @"Server =Localhost ;Database=Lab3;Trusted_Connection=Yes;";
             System.Data.SqlClient.SqlCommand insert = new System.Data.SqlClient.SqlCommand();
             insert.CommandText = "select SkillName from [dbo].[SKILL]";
             insert.Connection = sc;
@@ -358,7 +365,7 @@ public partial class _Default : System.Web.UI.Page
         try
         {
             System.Data.SqlClient.SqlConnection sc = new System.Data.SqlClient.SqlConnection();
-            sc.ConnectionString = @"Server =Localhost ;Database=Lab2;Trusted_Connection=Yes;";
+            sc.ConnectionString = @"Server =Localhost ;Database=Lab3;Trusted_Connection=Yes;";
             System.Data.SqlClient.SqlCommand insert = new System.Data.SqlClient.SqlCommand();
             insert.CommandText = "select ProjectName from [dbo].[PROJECT]";
             insert.Connection = sc;
@@ -376,11 +383,24 @@ public partial class _Default : System.Web.UI.Page
             Label.Text += s.Message;
         }
     }
-
+    protected void ShowAllEmployeesBtn_Click(object sender, EventArgs e)
+    {
+        System.Data.SqlClient.SqlConnection sc = new System.Data.SqlClient.SqlConnection();
+        sc.ConnectionString = @"Server =Localhost ;Database=Lab3;Trusted_Connection=Yes;";
+        System.Data.SqlClient.SqlCommand insert = new System.Data.SqlClient.SqlCommand();
+        insert.CommandText = "SELECT * from [dbo].[Employee]";
+        insert.Connection = sc;
+        sc.Open();
+        SqlDataReader rdr = insert.ExecuteReader();
+        AllEmployees.DataSource = rdr;
+        AllEmployees.DataBind();
+        sc.Close();
+    }
+ 
     protected void ShowDataBtn_Click(object sender, EventArgs e)
     {
         System.Data.SqlClient.SqlConnection sc = new System.Data.SqlClient.SqlConnection();
-        sc.ConnectionString = @"Server =Localhost ;Database=Lab2;Trusted_Connection=Yes;";
+        sc.ConnectionString = @"Server =Localhost ;Database=Lab3;Trusted_Connection=Yes;";
         System.Data.SqlClient.SqlCommand insert = new System.Data.SqlClient.SqlCommand();
         insert.CommandText = "SELECT Employee.EmployeeID, Employee.FirstName, Employee.LastName, Project.ProjectID, Project.ProjectName FROM Employee LEFT OUTER JOIN EmployeeProject on Employee.EmployeeID = EmployeeProject.EmployeeID LEFT OUTER JOIN Project on EmployeeProject.ProjectID = Project.ProjectID";
         insert.Connection = sc;
@@ -478,7 +498,7 @@ public partial class _Default : System.Web.UI.Page
             bool comparename = true;
             int result = 0;
             System.Data.SqlClient.SqlConnection sc = new System.Data.SqlClient.SqlConnection();
-            sc.ConnectionString = @"Server =Localhost ;Database=Lab2;Trusted_Connection=Yes;";
+            sc.ConnectionString = @"Server =Localhost ;Database=Lab3;Trusted_Connection=Yes;";
             System.Data.SqlClient.SqlCommand insert = new System.Data.SqlClient.SqlCommand();
             insert.Connection = sc;
             sc.Open();
@@ -505,7 +525,7 @@ public partial class _Default : System.Web.UI.Page
         int result = 0;
         bool compareOne = true;
         System.Data.SqlClient.SqlConnection sc = new System.Data.SqlClient.SqlConnection();
-        sc.ConnectionString = @"Server =Localhost ;Database=Lab2;Trusted_Connection=Yes;";
+        sc.ConnectionString = @"Server =Localhost ;Database=Lab3;Trusted_Connection=Yes;";
         System.Data.SqlClient.SqlCommand insert = new System.Data.SqlClient.SqlCommand();
         insert.Connection = sc;
         sc.Open();
@@ -530,7 +550,7 @@ public partial class _Default : System.Web.UI.Page
         int result = 0;
         bool compareManager = false;
         System.Data.SqlClient.SqlConnection sc = new System.Data.SqlClient.SqlConnection();
-        sc.ConnectionString = @"Server =Localhost ;Database=Lab2;Trusted_Connection=Yes;";
+        sc.ConnectionString = @"Server =Localhost ;Database=Lab3;Trusted_Connection=Yes;";
         System.Data.SqlClient.SqlCommand insert = new System.Data.SqlClient.SqlCommand();
         insert.Connection = sc;
         sc.Open();
@@ -553,7 +573,7 @@ public partial class _Default : System.Web.UI.Page
         int result = 0;
         bool compareOne = true;
         System.Data.SqlClient.SqlConnection sc = new System.Data.SqlClient.SqlConnection();
-        sc.ConnectionString = @"Server =Localhost ;Database=Lab2;Trusted_Connection=Yes;";
+        sc.ConnectionString = @"Server =Localhost ;Database=Lab3;Trusted_Connection=Yes;";
         System.Data.SqlClient.SqlCommand insert = new System.Data.SqlClient.SqlCommand();
         insert.Connection = sc;
         sc.Open();
@@ -577,7 +597,7 @@ public partial class _Default : System.Web.UI.Page
         try
         {
             System.Data.SqlClient.SqlConnection sc = new System.Data.SqlClient.SqlConnection();
-            sc.ConnectionString = @"Server =Localhost ;Database=Lab2;Trusted_Connection=Yes;";
+            sc.ConnectionString = @"Server =Localhost ;Database=Lab3;Trusted_Connection=Yes;";
             System.Data.SqlClient.SqlCommand insert = new System.Data.SqlClient.SqlCommand();
             insert.Connection = sc;
             sc.Open();
@@ -645,7 +665,7 @@ public partial class _Default : System.Web.UI.Page
             insert.Parameters.AddWithValue("@startDate", DateTime.Parse(txtProjectStartDate.Value));
             if (EndDate == DateTime.MinValue)
             {
-                insert.Parameters.AddWithValue("@endDate", "NULL");
+                insert.Parameters.AddWithValue("@endDate", DBNull.Value);
             }
             else
             {

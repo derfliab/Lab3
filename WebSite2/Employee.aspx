@@ -220,11 +220,36 @@
         <asp:Button ID="ClearBtn" runat="server" style="margin-right:20px" OnClick="ClearBtn_Click" formnovalidate="false" Text="Clear" />
         <asp:Button ID="EmployeeCommittBtn" runat="server" style="margin-right:20px" OnClick="EmployeeCommitBtn_Click" Text="Employee Commit" />
         <asp:Button ID="ShowData" runat="server" style="margin-right:20px" OnClick="ShowDataBtn_Click" formnovalidate="false" Text="Show Data" />
+        <asp:Button ID="ShowAllEmployees" runat="server" style="margin-right:20px" OnClick="ShowAllEmployeesBtn_Click" formnovalidate="false" Text="Show All Employees" />
         <asp:Button ID="Exit" runat="server" style="margin-right:20px" OnClick="ExitBtn_Click" formnovalidate="false" Text="Exit" />
         <br />
         <br />
         <asp:GridView ID="EmployeeData" runat="server"></asp:GridView>
          
+        <asp:GridView ID="AllEmployees" runat="server" AutoGenerateColumns="False" DataKeyNames="EmployeeID" DataSourceID="SqlDataSource1" AutoGenerateEditButton="true">
+            <Columns>
+                <asp:BoundField DataField="EmployeeID" HeaderText="EmployeeID" InsertVisible="False" ReadOnly="True" SortExpression="EmployeeID" />
+                <asp:BoundField DataField="FirstName" HeaderText="FirstName" SortExpression="FirstName" />
+                <asp:BoundField DataField="LastName" HeaderText="LastName" SortExpression="LastName" />
+                <asp:BoundField DataField="MI" HeaderText="MI" SortExpression="MI" />
+                <asp:BoundField DataField="HouseNumber" HeaderText="HouseNumber" SortExpression="HouseNumber" />
+                <asp:BoundField DataField="Street" HeaderText="Street" SortExpression="Street" />
+                <asp:BoundField DataField="CityCounty" HeaderText="CityCounty" SortExpression="CityCounty" />
+                <asp:BoundField DataField="StateAbb" HeaderText="StateAbb" SortExpression="StateAbb" />
+                <asp:BoundField DataField="CountryAbb" HeaderText="CountryAbb" SortExpression="CountryAbb" />
+                <asp:BoundField DataField="Zip" HeaderText="Zip" SortExpression="Zip" />
+                <asp:BoundField DataField="DateOfBirth" HeaderText="DateOfBirth" SortExpression="DateOfBirth" />
+                <asp:BoundField DataField="HireDate" HeaderText="HireDate" SortExpression="HireDate" />
+                <asp:BoundField DataField="TerminationDate" HeaderText="TerminationDate" SortExpression="TerminationDate" />
+                <asp:BoundField DataField="Salary" HeaderText="Salary" SortExpression="Salary" />
+                <asp:BoundField DataField="ManagerID" HeaderText="ManagerID" SortExpression="ManagerID" />
+                <asp:BoundField DataField="LastUpdatedBy" HeaderText="LastUpdatedBy" SortExpression="LastUpdatedBy" />
+                <asp:BoundField DataField="LastUpdated" HeaderText="LastUpdated" SortExpression="LastUpdated" />
+            </Columns>
+        </asp:GridView>
+
+        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:Lab3ConnectionString %>" SelectCommand="SELECT * FROM [Employee]"></asp:SqlDataSource>
+
         <br />
 
         <br />

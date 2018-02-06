@@ -47,8 +47,8 @@ public partial class _Default : System.Web.UI.Page
                 string commandText = "INSERT into [dbo].[Skill] (SkillName, SkillDescription, LastUpdatedBy, LastUpdated) " +
                     "values (@skillName, @skillDesc, @lastUpdatedBy, @lastUpdated)";
                 System.Data.SqlClient.SqlCommand insert = new System.Data.SqlClient.SqlCommand(commandText, sc);
-                insert.Parameters.AddWithValue("@projectName", newSkill.SkillName);
-                insert.Parameters.AddWithValue("@projectDesc", newSkill.SkillDescription);
+                insert.Parameters.AddWithValue("@skillName", newSkill.SkillName);
+                insert.Parameters.AddWithValue("@skillDesc", newSkill.SkillDescription);
                 insert.Parameters.AddWithValue("@lastUpdatedBy", newSkill.LastUpdatedBy);
                 insert.Parameters.AddWithValue("@lastUpdated", newSkill.LastUpdated);
 
