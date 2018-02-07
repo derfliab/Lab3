@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Data.SqlClient;
 
 /**
  * Andrea Derflinger
@@ -44,13 +45,13 @@ public partial class _Default : System.Web.UI.Page
                 Skill newSkill = new Skill(txtskillName.Value, txtskillDescription.Value, "Andrea Derflinger", DateTime.Now);
                 System.Data.SqlClient.SqlConnection sc = new System.Data.SqlClient.SqlConnection();
                 sc.ConnectionString = @"Server =Localhost ;Database=Lab3;Trusted_Connection=Yes;";
-                string commandText = "INSERT into [dbo].[Skill] (SkillName, SkillDescription, LastUpdatedBy, LastUpdated) " +
-                    "values (@skillName, @skillDesc, @lastUpdatedBy, @lastUpdated)";
-                System.Data.SqlClient.SqlCommand insert = new System.Data.SqlClient.SqlCommand(commandText, sc);
-                insert.Parameters.AddWithValue("@skillName", newSkill.SkillName);
-                insert.Parameters.AddWithValue("@skillDesc", newSkill.SkillDescription);
-                insert.Parameters.AddWithValue("@lastUpdatedBy", newSkill.LastUpdatedBy);
-                insert.Parameters.AddWithValue("@lastUpdated", newSkill.LastUpdated);
+                System.Data.SqlClient.SqlCommand insert = new System.Data.SqlClient.SqlCommand("DerflingerInsertSkill", sc);
+                insert.CommandType = System.Data.CommandType.StoredProcedure;
+
+                insert.Parameters.Add(new SqlParameter("@skillName", newSkill.SkillName));
+                insert.Parameters.Add(new SqlParameter("@skillDesc", newSkill.SkillDescription));
+                insert.Parameters.Add(new SqlParameter("@lastUpdatedBy", newSkill.LastUpdatedBy));
+                insert.Parameters.Add(new SqlParameter("@lastUpdated", newSkill.LastUpdated));
 
                 sc.Open();
                 insert.ExecuteNonQuery();

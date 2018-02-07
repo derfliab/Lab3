@@ -383,19 +383,6 @@ public partial class _Default : System.Web.UI.Page
             Label.Text += s.Message;
         }
     }
-    protected void ShowAllEmployeesBtn_Click(object sender, EventArgs e)
-    {
-        System.Data.SqlClient.SqlConnection sc = new System.Data.SqlClient.SqlConnection();
-        sc.ConnectionString = @"Server =Localhost ;Database=Lab3;Trusted_Connection=Yes;";
-        System.Data.SqlClient.SqlCommand insert = new System.Data.SqlClient.SqlCommand();
-        insert.CommandText = "SELECT * from [dbo].[Employee]";
-        insert.Connection = sc;
-        sc.Open();
-        SqlDataReader rdr = insert.ExecuteReader();
-        AllEmployees.DataSource = rdr;
-        AllEmployees.DataBind();
-        sc.Close();
-    }
  
     protected void ShowDataBtn_Click(object sender, EventArgs e)
     {
