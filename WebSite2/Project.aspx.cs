@@ -9,7 +9,7 @@ using System.Data;
 
 /**
  * Andrea Derflinger
- * Lab 2 
+ * Lab 3
  * 2/13/18
  * This work and I comply with the JMU Honor Code.
 **/
@@ -26,33 +26,48 @@ public partial class _Default : System.Web.UI.Page
     
     protected void ProjectCommitBtn_Click(object sender, EventArgs e)
     {
-        try
+        bool working = true;
+        if (txtprojectName.Value == "")
         {
-            Project newProject = new Project(txtprojectName.Value, txtprojectDescription.Value, "Andrea Derflinger", DateTime.Now);
-
-            System.Data.SqlClient.SqlConnection sc = new System.Data.SqlClient.SqlConnection();
-            sc.ConnectionString = @"Server =Localhost ;Database=Lab3;Trusted_Connection=Yes;";
-            string commandText = "INSERT into [dbo].[Project] (ProjectName, ProjectDescription, LastUpdatedBy, LastUpdated) " +
-                "values (@projectName, @projectDesc, @lastUpdatedBy, @lastUpdated)";
-            System.Data.SqlClient.SqlCommand insert = new System.Data.SqlClient.SqlCommand(commandText, sc);
-            insert.Parameters.AddWithValue("@projectName", newProject.ProjectName);
-            insert.Parameters.AddWithValue("@projectDesc", newProject.ProjectDescription);
-            insert.Parameters.AddWithValue("@lastUpdatedBy", newProject.LastUpdatedBy);
-            insert.Parameters.AddWithValue("@lastUpdated", newProject.LastUpdated);
-
-            sc.Open();
-            insert.ExecuteNonQuery();
-            Label.Text += "Project has been added!";
-            sc.Close();
+            working = false;
+            Label.Text += "Please fill all fields";
 
         }
-        catch (Exception i)
+        if (txtprojectDescription.Value == "")
         {
-            Label.Text += "Error adding project!";
-            Label.Text += i.Message;
+            working = false;
+            Label.Text += "Please fill all fields";
         }
 
+        if (working == true)
+        {
+            try
+            {
+                Project newProject = new Project(txtprojectName.Value, txtprojectDescription.Value, "Andrea Derflinger", DateTime.Now);
 
+                System.Data.SqlClient.SqlConnection sc = new System.Data.SqlClient.SqlConnection();
+                sc.ConnectionString = @"Server =Localhost ;Database=Lab3;Trusted_Connection=Yes;";
+                string commandText = "INSERT into [dbo].[Project] (ProjectName, ProjectDescription, LastUpdatedBy, LastUpdated) " +
+                    "values (@projectName, @projectDesc, @lastUpdatedBy, @lastUpdated)";
+                System.Data.SqlClient.SqlCommand insert = new System.Data.SqlClient.SqlCommand(commandText, sc);
+                insert.Parameters.AddWithValue("@projectName", newProject.ProjectName);
+                insert.Parameters.AddWithValue("@projectDesc", newProject.ProjectDescription);
+                insert.Parameters.AddWithValue("@lastUpdatedBy", newProject.LastUpdatedBy);
+                insert.Parameters.AddWithValue("@lastUpdated", newProject.LastUpdated);
+
+                sc.Open();
+                insert.ExecuteNonQuery();
+                Label.Text += "Project has been added!";
+                sc.Close();
+
+            }
+            catch (Exception i)
+            {
+                Label.Text += "Error adding project!";
+                Label.Text += i.Message;
+            }
+
+        }
     }
 
 
@@ -111,28 +126,48 @@ public partial class _Default : System.Web.UI.Page
 
     protected void UpdateProjectBtn_Click(object sender, EventArgs e)
     {
-        try
+        bool working = true;
+        if (txtUpdateProjectName.Text == "")
         {
-            System.Data.SqlClient.SqlConnection sc = new System.Data.SqlClient.SqlConnection();
-            sc.ConnectionString = @"Server =Localhost ;Database=Lab3;Trusted_Connection=Yes;";
-            sc.Open();
-            string commandText = "UPDATE [dbo].[Project] set [ProjectName] = @ProjectName, [ProjectDescription] = @ProjectDescription, [LastUpdatedBy] = @LastUpdatedBy, " +
-                "[LastUpdated] = @LastUpdated WHERE [ProjectID] = " + selectedID;
-            System.Data.SqlClient.SqlCommand insert = new System.Data.SqlClient.SqlCommand(commandText, sc);
+            working = false;
+            Label2.Text += "Please fill all fields";
 
-            insert.Parameters.AddWithValue("@ProjectName", txtUpdateProjectName.Text);
-            insert.Parameters.AddWithValue("@ProjectDescription", txtUpdateProjectDesc.Text);
-            insert.Parameters.AddWithValue("@LastUpdatedBy", "Andrea Derflinger");
-            insert.Parameters.AddWithValue("@LastUpdated", DateTime.Now);
-            
-            insert.ExecuteNonQuery();
-            Label2.Text += "Project has been updated!";
-            sc.Close();
         }
-        catch (Exception u)
+        if  (txtUpdateProjectDesc.Text == "")
         {
-            Label2.Text = u.Message;
+            working = false;
+            Label2.Text += "Please fill all fields";
+        }
+
+        if (working == true)
+        {
+            try
+            {
+                Project newProject = new Project(txtUpdateProjectName.Text, txtUpdateProjectDesc.Text, "Andrea Derflinger", DateTime.Now);
+
+                System.Data.SqlClient.SqlConnection sc = new System.Data.SqlClient.SqlConnection();
+                sc.ConnectionString = @"Server =Localhost ;Database=Lab3;Trusted_Connection=Yes;";
+                sc.Open();
+                string commandText = "UPDATE [dbo].[Project] set [ProjectName] = @ProjectName, [ProjectDescription] = @ProjectDescription, [LastUpdatedBy] = @LastUpdatedBy, " +
+                    "[LastUpdated] = @LastUpdated WHERE [ProjectID] = " + selectedID;
+                System.Data.SqlClient.SqlCommand insert = new System.Data.SqlClient.SqlCommand(commandText, sc);
+
+                insert.Parameters.AddWithValue("@ProjectName", newProject.ProjectName);
+                insert.Parameters.AddWithValue("@ProjectDescription", newProject.ProjectDescription);
+                insert.Parameters.AddWithValue("@LastUpdatedBy", newProject.LastUpdatedBy);
+                insert.Parameters.AddWithValue("@LastUpdated", newProject.LastUpdated);
+
+                insert.ExecuteNonQuery();
+                Label2.Text += "Project has been updated!";
+                sc.Close();
+            }
+            catch (Exception u)
+            {
+                Label2.Text = u.Message;
+            }
         }
     }
+
+    
     
 }

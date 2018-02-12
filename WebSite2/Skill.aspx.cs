@@ -6,10 +6,11 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data.SqlClient;
 
+
 /**
  * Andrea Derflinger
- * Lab 2 
- * 1/30/2018
+ * Lab 3
+ * 2/13/18
  * This work and I comply with the JMU Honor Code.
 **/
 public partial class _Default : System.Web.UI.Page

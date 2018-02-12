@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
+
 /**
  * Andrea Derflinger
- * Lab 2 
- * 1/30/2018
+ * Lab 3
+ * 2/13/18
  * This work and I comply with the JMU Honor Code.
 **/
 public class Employee
